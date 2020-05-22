@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 public class RegisterMenu extends Container {
     private JLabel loginLabel;
@@ -16,6 +17,7 @@ public class RegisterMenu extends Container {
 
     private JButton submitButton;
     private JButton loginButton;
+    private JButton backtoMenuButton;
     private JRadioButton male;
     private JRadioButton female;
 
@@ -74,13 +76,25 @@ public class RegisterMenu extends Container {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try{
+                    ResultSet result = Main.statement.executeQuery("SELECT * FROM user WHERE login=" + loginField.getText());
+                    if(!result.next()){
+                        Main.statement.executeQuery("" +
+                                "INSERT INTO user (id, userName, login, password, gender) " +
+                                "VALUES (NULL, ?, ?, ?, ?)");
+                    }
+                    else JOptionPane.showMessageDialog(null, "Пользователь с таким логином уже есть!");
+                }
+                catch (Exception e1) {
+                e1.printStackTrace();
+                }
 
             }
         });
         add(submitButton);
 
         loginButton = new JButton("SIGN UP");
-        loginButton.setBackground(new java.awt.Color(231, 105, 105));
+        loginButton.setBackground(new java.awt.Color(148, 148, 153));
         loginButton.setBounds(90, 260, 210, 30);
         loginButton.addActionListener(new ActionListener() {
             @Override
@@ -90,6 +104,18 @@ public class RegisterMenu extends Container {
             }
         });
         add(loginButton);
+
+        backtoMenuButton = new JButton("BACK");
+        backtoMenuButton.setBackground(new java.awt.Color(231, 105, 105));
+        backtoMenuButton.setBounds(90, 300, 210, 30);
+        backtoMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.frame.registerWindow.setVisible(false);
+                Main.frame.menuWindow.setVisible(true);
+            }
+        });
+        add(backtoMenuButton);
     }
     }
 

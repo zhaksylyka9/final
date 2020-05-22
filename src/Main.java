@@ -1,16 +1,20 @@
+import javax.swing.*;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Main {
+    public static Statement statement;
     public static MainFrame frame;
     public static void connect(PackageData pd){
         try{
             Socket socket = new Socket("127.0.0.1", 8808);
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-
 
             if(pd.getOperationType().equals("ADD")){
                 outputStream.writeObject(pd);
@@ -21,13 +25,11 @@ public class Main {
                 ArrayList<Student> arrayListFromServer = infoFromServer.getStudents();
 
                 String s = "";
-                String a = "";
                 for(int i = 0; i<arrayListFromServer.size();i++){
                     s+=arrayListFromServer.get(i) + "\n";
-                    a+=arrayListFromServer.get(i) + "\n";
                 }
                 ListStudent.studentText.append(s);
-                ListTeacher.teacherText.append(a);
+
 
             }
 
@@ -57,9 +59,23 @@ public class Main {
         items[countItems] = dp;
         countItems++;
     }
+    public static Teacher[] teachers = new Teacher[20];
+    public static int countTeachers = 0;
+
+    public static void addTeachers(Teacher te){
+        teachers[countTeachers] = te;
+        countTeachers++;
+    }
 
     public static void main(String[] args){
         frame = new MainFrame();
         frame.setVisible(true);
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Main();
+            }
+        });
     }
 }

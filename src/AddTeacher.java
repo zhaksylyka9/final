@@ -57,8 +57,8 @@ public class AddTeacher extends Container {
                 String patronymic = teacherPatronymicText.getText();
                 String subject = (String) subjectBox.getSelectedItem();
 
-                Teacher teacher = new Teacher(null, teacherName, patronymic, subject);
-
+                Teacher te = new Teacher(teacherName, patronymic, subject);
+                Main.addTeachers(te);
 
 
 
