@@ -23,7 +23,7 @@ public class ListTeacher extends Container {
         listTeacherButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String s = "";
+                              String s = "";
                 for(int i = 0; i<Main.countTeachers;i++){
                     s+=Main.teachers[i] + "\n";
                 }
